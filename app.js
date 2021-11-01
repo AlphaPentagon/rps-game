@@ -1,11 +1,25 @@
-// Initialise a variable called computerSelection
+
 let computerSelection = "";
-// // Initialise a variable called playerSelection
-// let playerSelection = "";
-// Initialise a variable called playerScore and assign it 0
 let playerScore = 0;
-// Intialise a variable called computerScore and assign it 0
 let computerScore = 0;
+let gameRounds = 1;
+
+
+const rock = document.querySelector("#rock-btn");
+const paper = document.querySelector("#paper-btn");
+const scissors = document.querySelector("#scissors-btn");
+const gameText = document.querySelector("#game-text");
+const playerScoreContent = document.querySelector("#player-score");
+const compScoreContent = document.querySelector("#comp-score");
+const gameRoundsContent = document.querySelector("#game-rounds");
+const resetButton = document.createElement('button');
+const resetContainer = document.querySelector("#reset-button-container");
+
+rock.addEventListener("click", function() { game("rock")});
+paper.addEventListener("click", function() { game("paper")});
+scissors.addEventListener("click", function() { game("scissors")});
+resetButton.addEventListener("click", function() { resetGame()});
+
  
 
  
@@ -14,125 +28,107 @@ let computerScore = 0;
 // one and three and then assigns either Rock, Paper or Scissors depending on
 // the number generated
 
-function computerPlay() {
- 
-
-    // Initialise a variable called randomNumber
+function computerPlay() { 
 
     let randomNumber = 0; 
 
     // generate a random number between 1 and 3 and then assign the result to the variable randomNumber
 
-    randomNumber = Math.floor((Math.random() * 3) + 1);
-
-    // If randomNumber EQUALS 1 THEN set computerSelection to "Rock"
+    randomNumber = Math.floor((Math.random() * 3) + 1);   
     if (randomNumber == 1) {
         computerSelection = "rock";
     }
-
-    // ELSE IF randomNumber EQUALS 2 THEN set computerSelection to "Paper"
-
     else if (randomNumber == 2) {
         computerSelection = "paper";
     }
-
-    // ELSE IF randomNumber EQUALS 3THEN set computerSelection to "Scissors"
-
     else if (randomNumber == 3) {
         computerSelection = "scissors";
     }
-
-    // RETURN computerSelection
-
     return computerSelection;
-
-}
-
- 
+} 
 
 // Create a function called singleRound that takes two parameters as arguments 
 // - playerSelection and computerSelection - and determines who wins
 
-function singleRound(playerSelection, computerSelection) {
+function singleRound(playerSelection, computerSelection) {    
     
-    // IF playerSelection EQUALS computerSelection 
-    // THEN RETURN "It's a draw! playerSelection and computerSelection draw."
     if (playerSelection == computerSelection) {
-        return `It's a draw! ${ playerSelection} and ${computerSelection} draw.`
-    }
-
-    // ELSE IF playerSelection EQUALS Rock AND computerSelection EQUALS Scissors
-    // THEN RETURN "You win! playerSelection beats computerSelection"
-
-    else if (playerSelection == "rock" && computerSelection == "scissors") {
-        // INCREASE playerScore by 1
+        gameText.textContent = `Your ${ playerSelection} and computer's ${computerSelection} draw.`
+    } else if (playerSelection == "rock" && computerSelection == "scissors") {
         playerScore++;
-        return `You win! ${ playerSelection} beats ${ computerSelection }`;
-        
-    }
-
-    // ELSE IF playerSelection EQUALS Scissors AND computerSelection EQUALS Paper
-    // THEN RETURN "You win! playerSelection beats computerSelection"
-
-    else if (playerSelection == "scissors" && computerSelection == "paper") {
-        // INCREASE playerScore by 1
+        gameText.textContent = `Your ${ playerSelection} beats computer's ${ computerSelection }`;        
+    } else if (playerSelection == "scissors" && computerSelection == "paper") {
         playerScore++;
-        return `You win! ${ playerSelection} beats ${ computerSelection }`;
-        
-    }
-
-    // ELSE IF playerSelection EQUALS Paper AND computerSelection EQUALS Rock
-    // THEN RETURN "You win! playerSelection beats computerSelection"
-
-    else if (playerSelection == "paper" && computerSelection == "rock") {
-        // INCREASE playerScore by 1
+        gameText.textContent =`Your ${ playerSelection} beats computer's ${ computerSelection }`;        
+    } else if (playerSelection == "paper" && computerSelection == "rock") {
         playerScore++;
-        return `You win! ${ playerSelection} beats ${ computerSelection }`;
-        
-    }
-
-    // ELSE RETURN "You lose! playerSelection loses to computerSelection"
-    else {
+        gameText.textContent = `Your ${ playerSelection} beats computers ${ computerSelection }`;        
+    } else {
         // INCREASE computerScore by 1
         computerScore++;
-        return `You lose! ${computerSelection} beats ${playerSelection}`;
-        
+        gameText.textContent = `Your ${playerSelection} loses to computer's ${computerSelection}`;        
     }
+
+   
+
+
 }
 
- 
+function resetGame() {
+    rock.disabled = false;
+    paper.disabled = false;
+    scissors.disabled = false;
+    playerScore = 0;
+    computerScore = 0;
+    gameRounds = 1;
+    playerScoreContent.textContent = `You: `;
+    compScoreContent.textContent = `Computer: `;
+    gameRoundsContent.textContent = `Round: `;
+    gameText.textContent = `Click a button to start the game`
+    resetContainer.removeChild(resetButton); 
+}
 
 // Create a funtion called game that tracks 5 rounds of the singleRound function and prints to the console the result after each round
 // and the overall winner at the end
 
-function game() {    
-
-    // Call the singleRound function five times
-
-    for (let i = 0; i < 5; i++) {
-
-        // Ask the payer to type in Rock Paper or Scissors
-
-        playerSelection = prompt("Rock, paper or scissors?");
-        playerSelection = playerSelection.toLowerCase();
+function game(playerSelection) {
+                  
 
         // Run the computerPlay() function to generate a computer choice
 
-        console.log(computerPlay());
-
-        console.log(singleRound(playerSelection, computerSelection));
-    }
+        computerPlay();
+        
+        singleRound(playerSelection, computerSelection);
+        playerScoreContent.textContent = `You: ${playerScore}`;
+        compScoreContent.textContent = `Computer: ${computerScore}`;
+        gameRoundsContent.textContent = `Round: ${gameRounds}/5`; 
+        playerSelection = "";
+        computerSelection = "";
+        gameRounds++;
+        
+        
+  
     
     // After the last round, IF playerScore is greater then computerScore
     // THEN print to the console "You win! playerScore games to computerScore"
 
-    if (playerScore > computerScore) {
-        console.log(`You win! ${ playerScore } games to ${ computerScore }`);
-    }
-    
-    // ELSE print to the console "You lose! playerScore games to computerScore"
+    if (gameRounds > 5) {
+        if (playerScore > computerScore) {
+            gameText.textContent = `You win!`;
+        }    
+        // ELSE print to the console "You lose! playerScore games to computerScore"
+        else if (computerScore > playerScore) {
+            gameText.textContent = `You lose!`;
+        }
+        else {
+            gameText.textContent = `You draw!`;
+        }
+        rock.disabled = true;
+        paper.disabled = true;
+        scissors.disabled = true;
+        resetButton.classList.add("buttons");
+        resetButton.textContent = "Reset";
+        resetContainer.appendChild(resetButton);
 
-    else {
-        console.log(`You lose! ${ playerScore } games to ${ computerScore }`)
     }
 }

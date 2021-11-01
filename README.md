@@ -1,16 +1,14 @@
 Rock Paper Scissors game
 
-Intended to be played through a browser console and using a browser page
+There are five rounds. 
 
-The game can be started by calling the game() function from the console.
+You score a point for each round you win.  The computer scores a point for each round you lose.  No one scores a point for a round that is a draw.
 
-There are five rounds. You will be asked to type in either Rock, Paper or Scissors.
-After each round the result will be printed to the console.
-After five rounds the total result will be printed to the console.
+After five round, the winner is declared.
 
-Notes:
+Notes
 
-I made an effort to plan this using pseudo code before I opened my editor.  I 
-    then copied this pseudo code into the editor and used it as comments
-    to structure my code.
-I hope this makes the code easy to follow.
+Updated from the console only version.
+
+Added JS functionality to manipulate the DOM and CSS to style the app.  I've deliberately kept it simple to look at and play.
+
